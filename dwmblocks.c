@@ -65,12 +65,11 @@ void getcmd(const Block *block, char *output)
 	fgets(output+i, CMDLENGTH-i-delimLen, cmdf);
 	pclose(cmdf);
 	i = strlen(output);
-	if (i == 0) {
-		/* return if block and command output are both empty */
-		return;
-	}
 	i = (i && output[i-1] == '\n') ? i-1 : i;   /* delete trailing newline */
-	strncpy(output+i, delim, delimLen);
+	if (i == 0)     /* ensure length 0 in case the string was "\n" */
+		output[0] = '\0';   /* ensure length 0 in case the string was "\n" */
+	else            /* only add delimiter if output not empty */
+		strncpy(output+i, delim, delimLen);
 }
 
 void getcmds(int time)
