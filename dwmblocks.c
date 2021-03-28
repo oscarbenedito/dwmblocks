@@ -19,7 +19,6 @@
 #define STATUSLENGTH (LENGTH(blocks) * CMDLENGTH + 1)
 
 typedef struct {
-	char* icon;
 	char* command;
 	unsigned int interval;
 	unsigned int signal;
@@ -57,13 +56,13 @@ static int returnStatus = 0;
 /* opens process *cmd and stores output in *output */
 void getcmd(const Block *block, char *output)
 {
-	strcpy(output, block->icon);
+	int i;
 	FILE *cmdf = popen(block->command, "r");
 	if (!cmdf)
 		return;
-	int i = strlen(block->icon);
-	fgets(output+i, CMDLENGTH-i-strlen(delim), cmdf);
+	fgets(output, CMDLENGTH-strlen(delim), cmdf);
 	pclose(cmdf);
+
 	i = strlen(output);
 	i = (i && output[i-1] == '\n') ? i-1 : i;   /* delete trailing newline */
 	if (i == 0)     /* ensure length 0 in case the string was "\n" */
