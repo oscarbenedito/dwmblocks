@@ -109,7 +109,7 @@ void setupsignals()
 int getstatus(char *str, char *last)
 {
 	strcpy(last, str);
-	str[0] = '\0';
+	strcpy(str, " ");       /* add leading space to status bar */
 	for (unsigned int i = 0; i < LENGTH(blocks); i++)
 		strcat(str, statusbar[i]);
 	str[strlen(str)-strlen(delim)] = '\0';
