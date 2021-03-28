@@ -62,14 +62,14 @@ void getcmd(const Block *block, char *output)
 	if (!cmdf)
 		return;
 	int i = strlen(block->icon);
-	fgets(output+i, CMDLENGTH-i-delimLen, cmdf);
+	fgets(output+i, CMDLENGTH-i-strlen(delim), cmdf);
 	pclose(cmdf);
 	i = strlen(output);
 	i = (i && output[i-1] == '\n') ? i-1 : i;   /* delete trailing newline */
 	if (i == 0)     /* ensure length 0 in case the string was "\n" */
 		output[0] = '\0';   /* ensure length 0 in case the string was "\n" */
 	else            /* only add delimiter if output not empty */
-		strncpy(output+i, delim, delimLen);
+		strcpy(output+i, delim);
 }
 
 void getcmds(int time)
@@ -186,7 +186,7 @@ int main(int argc, char** argv)
 	/* handle command line arguments */
 	for (int i = 0; i < argc; i++) {
 		if (!strcmp("-d", argv[i]))
-			strncpy(delim, argv[++i], delimLen);
+			strcpy(delim, argv[++i]);
 		else if (!strcmp("-p", argv[i]))
 			writestatus = pstdout;
 	}
@@ -194,8 +194,6 @@ int main(int argc, char** argv)
 	if (!setupX())
 		return 1;
 #endif
-	delimLen = MIN(delimLen, strlen(delim));
-	delim[delimLen++] = '\0';
 	signal(SIGTERM, termhandler);
 	signal(SIGINT, termhandler);
 	statusloop();
