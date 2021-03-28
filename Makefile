@@ -2,11 +2,11 @@ PREFIX ?= /usr/local
 CC ?= cc
 LDFLAGS = -lX11
 
-dwmblocks: dwmblocks.c blocks.h
+dwmblocks: dwmblocks.c config.h
 	${CC} dwmblocks.c $(LDFLAGS) -o dwmblocks
 
-blocks.h:
-	cp blocks.def.h $@
+config.h:
+	cp config.def.h $@
 
 install: dwmblocks
 	mkdir -p $(DESTDIR)$(PREFIX)/bin
