@@ -60,7 +60,8 @@ void getcmd(const Block *block, char *output)
 	FILE *cmdf = popen(block->command, "r");
 	if (!cmdf)
 		return;
-	fgets(output, CMDLENGTH-strlen(delim), cmdf);
+	if (fgets(output, CMDLENGTH-strlen(delim), cmdf) == NULL)
+		output[0] = '\0';
 	pclose(cmdf);
 
 	i = strlen(output);
